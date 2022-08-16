@@ -34,7 +34,7 @@ npm start
 ## Playing with the parser - by cli
 
 ```sh
-node parser.js --url=http://localhost:3000/PDFs/Fake-Resume.pdf
+node parser.js --pdf=http://localhost:3000/PDFs/Fake-Resume.pdf
 ```
 
 More options:
@@ -46,18 +46,18 @@ node parser.js
 
 With url that is not exists: 
 ```sh
-node parser.js --url=http://localhost:3000/PDFs/not-exists.pdf
+node parser.js --pdf=http://localhost:3000/PDFs/not-exists.pdf
 ```
 
 With url that is not a pdf: 
 ```sh
-node parser.js --url=http://localhost:3000/PDFs/not-pdf-file.txt
+node parser.js --pdf=http://localhost:3000/PDFs/not-pdf-file.txt
 ```
 
 
 With url that is not a valid resume format: 
 ```sh
-node parser.js --url=http://localhost:3000/PDFs/not-valid-format.pdf
+node parser.js --pdf=http://localhost:3000/PDFs/not-valid-format.pdf
 ```
 
 ---
@@ -68,7 +68,14 @@ http://localhost:3000/
 
 
 #### Fake Resume Example
-http://localhost:3000/?pdf=http://localhost:3000/PDFs/Fake-Resume.pdf
+http://localhost:3000/parser?pdf=http://localhost:3000/PDFs/Fake-Resume.pdf
 
-#### Not Valid Format Example
-http://localhost:3000/?pdf=http://localhost:3000/PDFs/hello-world.pdf
+#### With url that is not exists: 
+http://localhost:3000/parser?pdf=http://localhost:3000/PDFs/not-exists.pdf
+
+#### With url that is not a pdf:
+http://localhost:3000/parser?pdf=http://localhost:3000/PDFs/not-pdf-file.txt
+
+#### With url that is not a valid resume format: 
+http://localhost:3000/parser?pdf=http://localhost:3000/PDFs/not-valid-format.pdf
+

@@ -1,15 +1,15 @@
 const args = require('minimist')(process.argv.slice(2));
 const { processPdfByUrl } = require('./processPdfByUrl.js');
-const url = args?.url;
+const pdf = args?.pdf;
 
-if (!url) {
-    console.log('Error - Missing --url=[url] parameter');
+if (!pdf) {
+    console.log('Error - Missing --pdf=[url] parameter');
     process.exit();
 }
 
-const main = async (uri) => {
+const main = async (pdfUri) => {
     try {
-        const pdfInformation = await processPdfByUrl(uri);
+        const pdfInformation = await processPdfByUrl(pdfUri);
         console.log(pdfInformation);
             
     } catch (error) {
@@ -18,33 +18,4 @@ const main = async (uri) => {
     process.exit(); 
 }
 
-main(url);
-
-// process.exit();
-
-// const app = express();
-// const port = process.env.PORT || 3000;
-
-// app.use(express.static('public'))
-
-// app.get('/', async (req, res, next) => {
-//     try {
-
-//         // Check for query param: pdf
-//         if (!req.query.pdf){
-//             res.status(400).send('Error:  Missing ?pdf= parameter');
-//             return; 
-//         }
-
-//         const pdfUri = req.query.pdf;
-//         const pdfInformation = await processPdfByUrl(pdfUri);
-//         res.send(pdfInformation);
-
-//     } catch (error) {
-//         next(error);
-//     }
-// })
-
-// app.listen(port, () => {
-//     console.log(`Example app listening on port ${port}`)
-// })
+main(pdf);
