@@ -1,12 +1,12 @@
 const express = require('express');
-const { processPdf } = require('./parser.js');
+const { processPdfByUrl } = require('./processPdfByUrl.js');
 
 const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(express.static('public'))
 
-app.get('/', async (req, res, next) => {
+app.get('/parser/', async (req, res, next) => {
     try {
 
         // Check for query param: pdf
@@ -16,7 +16,7 @@ app.get('/', async (req, res, next) => {
         }
 
         const pdfUri = req.query.pdf;
-        const pdfInformation = await processPdf(pdfUri);
+        const pdfInformation = await processPdfByUrl(pdfUri);
         res.send(pdfInformation);
 
     } catch (error) {

@@ -1,51 +1,50 @@
-const pdfParse = require('pdf-parse');
-const fetch = require('node-fetch');
+const args = require('minimist')(process.argv.slice(2));
+const { processPdfByUrl } = require('./processPdfByUrl.js');
+const url = args?.url;
 
-
-const { extractSections } = require('./parser-utils/extractSections');
-const { parseIntroSection } = require('./parser-utils/parseIntroSection');
-const { parseEducationSection } = require('./parser-utils/parseEducationSection');
-const { parseEmploymentHistorySection } = require('./parser-utils/parseEmploymentHistorySection');
-
-const readPdf = async (uri) => {
-    try {
-        const response = await fetch(uri);
-        if (response.status !== 200) {
-            throw `Error - Can't fetch file. [${uri}] [status: ${response.status}]`;
-        }
-
-        // Check if file is PDF file
-        const responseText = await response.text();
-        if (responseText.substring(0,5) !== '%PDF-') {
-            throw `Error - File is not a PDF file. [${uri}] [status: ${response.status}]`;
-        }
-
-        const data = await pdfParse(response);
-
-        return data;
-    } catch (error) {
-        throw error;
-    }
+if (!url) {
+    console.log('Error - Missing --url=[url] parameter');
+    process.exit();
 }
 
-module.exports.processPdf = async (uri) => {
+const main = async (uri) => {
     try {
-        const data = await readPdf(uri);
-        const pdfSections = extractSections(data?.text);
-
-        const intro = parseIntroSection(pdfSections.intro);
-        const education = parseEducationSection(pdfSections.education);
-        const employmentHistory = parseEmploymentHistorySection(pdfSections.employmentHistory);
-
-        const pdfInformation = {
-            "contact-info": {
-                "name": intro.fullName
-            },
-            "experience": employmentHistory
-        }
-
-        return pdfInformation;
+        const pdfInformation = await processPdfByUrl(uri);
+        console.log(pdfInformation);
+            
     } catch (error) {
-        throw error;
+        console.log({ error: error.message || error});
     }
+    process.exit(); 
 }
+
+main(url);
+
+// process.exit();
+
+// const app = express();
+// const port = process.env.PORT || 3000;
+
+// app.use(express.static('public'))
+
+// app.get('/', async (req, res, next) => {
+//     try {
+
+//         // Check for query param: pdf
+//         if (!req.query.pdf){
+//             res.status(400).send('Error:  Missing ?pdf= parameter');
+//             return; 
+//         }
+
+//         const pdfUri = req.query.pdf;
+//         const pdfInformation = await processPdfByUrl(pdfUri);
+//         res.send(pdfInformation);
+
+//     } catch (error) {
+//         next(error);
+//     }
+// })
+
+// app.listen(port, () => {
+//     console.log(`Example app listening on port ${port}`)
+// })
